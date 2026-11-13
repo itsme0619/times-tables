@@ -1,0 +1,10 @@
+{
+  "name": "Times Table Scoops",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "postCreateCommand": "npm install",
+  "postAttachCommand": "npm run dev",
+  "forwardPorts": [5173],
+  "portsAttributes": {
+    "5173": { "label": "Times Table Scoops", "onAutoForward": "openPreview" }
+  }
+}
