@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TOTAL_LEVELS } from '../storage';
 
-export default function Grownups({ kids, firstRun: firstRunProp, onAdd, onRename, onReset, onDelete, onSetLevel, onDone }) {
+export default function Grownups({ kids, firstRun: firstRunProp, onAdd, onRename, onReset, onDelete, onPatch, onSignOut, email, onDone }) {
   const [firstRun] = useState(firstRunProp); // stay in "welcome" mode until they leave this screen
   const [name, setName] = useState('');
   const [confirm, setConfirm] = useState(null); // { id, action }
@@ -44,7 +44,7 @@ export default function Grownups({ kids, firstRun: firstRunProp, onAdd, onRename
                 <td>{k.practiceNeeded}</td>
                 <td className="actions">
                   {k.practiceNeeded > 0 && (
-                    <button className="btn ghost small" onClick={() => onSetLevel(k.id, { practiceNeeded: 0 })}>Unlock test</button>
+                    <button className="btn ghost small" onClick={() => onPatch(k.id, { practiceNeeded: 0 })}>Unlock test</button>
                   )}
                   {confirm?.id === k.id ? (
                     <>
@@ -72,27 +72,9 @@ export default function Grownups({ kids, firstRun: firstRunProp, onAdd, onRename
         </table>
       )}
 
-      {kids.length > 0 && (
-        <details className="history">
-          <summary>Recent activity</summary>
-          {kids.map((k) => (
-            <div key={k.id}>
-              <h4>{k.name}</h4>
-              <ul>
-                {k.history.slice(-10).reverse().map((h, i) => (
-                  <li key={i}>
-                    {new Date(h.date).toLocaleString()} — {h.n}× {h.type}
-                    {h.type === 'test' && ` · ${h.score}/12 ${h.score === 12 ? '✅' : '❌'}`}
-                  </li>
-                ))}
-                {k.history.length === 0 && <li className="muted">Nothing yet</li>}
-              </ul>
-            </div>
-          ))}
-        </details>
-      )}
-
       <div className="row end">
+        <span className="muted signed-in">Signed in as {email}</span>
+        <button className="btn ghost small" onClick={onSignOut}>Sign out</button>
         <button className="btn primary big" disabled={kids.length === 0} onClick={onDone}>
           {firstRun ? "Let's go!" : 'Done'}
         </button>

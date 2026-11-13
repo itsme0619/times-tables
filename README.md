@@ -15,7 +15,7 @@ Get all 12 scoops on the cone → real ice cream!
   If they miss one, the app shows the answer and they type it back. That fact comes back later in the round. A session is done when all 12 are right.
 - **Grown-ups** screen: add/rename/delete kids, reset progress, unlock a test early, and see recent activity.
 
-Progress is saved in the browser's local storage, so it stays on the device and browser you use.
+Progress is saved in **Firebase** (Firestore) under one family account, so kids can sign in from any device. Only what's needed is stored: each kid's name, current times table, scoop flavors, and how many practices are left before the test unlocks. Paste your Firebase config into `src/firebase-config.js`. The database rules are in `firestore.rules`.
 
 ## Run it in GitHub Codespaces
 
@@ -43,7 +43,6 @@ The repo has a workflow (`.github/workflows/deploy.yml`) that builds the app and
 Bookmark that link on the kids' devices. On an iPad or phone, use **Share → Add to Home Screen** so it opens like an app.
 
 Notes:
-- Progress is saved on each device and browser separately. Use the same device and browser for each kid so their scoops stay put.
 - On the free GitHub plan, Pages needs the repo to be **public**. Kids' names show only inside the app on their own device, not in the code, so nothing personal ends up in the repo.
 - Changes you make in the Codespace go live after you `git push`.
 
@@ -52,7 +51,9 @@ Notes:
 ```
 src/
   App.jsx               screens + all progress rules
-  storage.js            save/load + settings (test length, timer, practices after a fail)
+  firebase.js           Firebase setup (config goes in firebase-config.js)
+  storage.js            settings (test length, timer, practices after a fail)
+  components/Login.jsx  family sign-in
   flavors.js            the 12 ice cream flavors
   components/
     Cone.jsx            the SVG cone and scoops
